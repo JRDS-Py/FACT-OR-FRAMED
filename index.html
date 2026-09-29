@@ -3,109 +3,229 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feedback Form</title>
+  <title>Fact or Framed? Poll</title>
   <style>
-    /* CUSTOM THEME COLORS & STYLING */
+    /* CUSTOMIZABLE THEME VARIABLES */
     :root {
-      --bg-color: #f4f6f8;
-      --card-bg: #ffffff;
-      --primary-color: #6366f1; /* Main Accent Color */
-      --primary-hover: #4f46e5;
-      --text-color: #1f2937;
-      --border-color: #e5e7eb;
-      --accent-scale: #818cf8;
+      --bg-color: #0f172a;        /* Main dark background */
+      --card-bg: #1e293b;          /* Form card background */
+      --primary-color: #6366f1;   /* Primary button & accent color */
+      --primary-hover: #4f46e5;   /* Button hover state */
+      --text-main: #f8fafc;       /* Header and primary text */
+      --text-muted: #94a3b8;      /* Labels and secondary text */
+      --border-color: #334155;    /* Input field borders */
+      --input-bg: #0f172a;        /* Input background */
+      --scale-hover: #475569;      /* Scale button hover state */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-color);
-      color: var(--text-color);
+      color: var(--text-main);
       display: flex;
       justify-content: center;
+      align-items: center;
+      min-height: 100vh;
       padding: 2rem 1rem;
     }
 
     .form-card {
       background-color: var(--card-bg);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      max-width: 500px;
+      border: 1px solid var(--border-color);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      max-width: 620px;
       width: 100%;
     }
 
-    .form-group {
-      margin-bottom: 1.5rem;
+    .form-header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
     }
 
-    label {
-      display: block;
-      font-weight: 600;
+    .school-title {
+      color: var(--primary-color);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .form-header h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
       margin-bottom: 0.5rem;
     }
 
+    .form-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.75rem;
+    }
+
+    label.question-title {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+
+    /* INPUT STYLING */
     input[type="text"],
-    input[type="email"],
+    input[type="number"],
     textarea {
       width: 100%;
-      padding: 0.75rem;
+      background-color: var(--input-bg);
+      color: var(--text-main);
+      padding: 0.85rem 1rem;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 1rem;
-      box-sizing: border-box;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     input[type="text"]:focus,
-    input[type="email"]:focus,
+    input[type="number"]:focus,
     textarea:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    /* CHECKBOX & RADIO LISTS */
+    .checkbox-group,
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      transition: border-color 0.2s;
+    }
+
+    .option-label:hover {
       border-color: var(--primary-color);
     }
 
-    /* CUSTOM RATING SCALE STYLING (1-5) */
-    .scale-container {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
+    .option-label input[type="checkbox"],
+    .option-label input[type="radio"] {
+      accent-color: var(--primary-color);
+      width: 1.1rem;
+      height: 1.1rem;
     }
 
-    .scale-option {
+    /* AGE CHOICE GRID */
+    .age-grid {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .age-option {
       flex: 1;
       text-align: center;
     }
 
+    .age-option input[type="radio"] {
+      display: none;
+    }
+
+    .age-option label {
+      display: block;
+      padding: 0.85rem 0;
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    .age-option label:hover {
+      background-color: var(--scale-hover);
+    }
+
+    .age-option input[type="radio"]:checked + label {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border-color: var(--primary-color);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    /* 1 TO 10 RATING SCALE STYLING */
+    .scale-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .scale-container {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 0.35rem;
+    }
+
     .scale-option input[type="radio"] {
-      display: none; /* Hide default radio */
+      display: none;
     }
 
     .scale-option label {
       display: block;
       padding: 0.75rem 0;
-      background-color: #f3f4f6;
-      border: 2px solid transparent;
+      text-align: center;
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-main);
       transition: all 0.2s ease;
+    }
+
+    .scale-option label:hover {
+      background-color: var(--scale-hover);
     }
 
     .scale-option input[type="radio"]:checked + label {
       background-color: var(--primary-color);
       color: #ffffff;
-      border-color: var(--primary-hover);
+      border-color: var(--primary-color);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
     }
 
-    .scale-option label:hover {
-      background-color: var(--accent-scale);
-      color: #ffffff;
-    }
-
-    /* SLIDER SCALE STYLING */
-    .range-slider {
-      width: 100%;
-      accent-color: var(--primary-color);
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0 0.2rem;
     }
 
     button[type="submit"] {
@@ -113,80 +233,149 @@
       background-color: var(--primary-color);
       color: #ffffff;
       border: none;
-      padding: 0.85rem;
+      padding: 1rem;
       font-size: 1rem;
-      font-weight: 600;
-      border-radius: 8px;
+      font-weight: 700;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: background-color 0.2s, transform 0.1s;
+      margin-top: 1rem;
     }
 
     button[type="submit"]:hover {
       background-color: var(--primary-hover);
+    }
+
+    button[type="submit"]:active {
+      transform: scale(0.99);
+    }
+
+    @media (max-width: 480px) {
+      .scale-container {
+        grid-template-columns: repeat(5, 1fr);
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="form-card">
-    <h2>Send Us Feedback</h2>
+    <div class="form-header">
+      <div class="school-title">Empyrean School</div>
+      <h1>Fact or Framed?</h1>
+      <p>Please answer honestly - there are no right or wrong answers.</p>
+    </div>
     
     <!-- FORMSPREE ENDPOINT INTEGRATION -->
     <form action="https://formspree.io/f/xnpnlgvd" method="POST">
+
+      <!-- Age Group Selection -->
+      <div class="form-group">
+        <label class="question-title">Age Group</label>
+        <div class="age-grid">
+          <div class="age-option">
+            <input type="radio" id="age-10-13" name="age_group" value="10-13" required />
+            <label for="age-10-13">10–13</label>
+          </div>
+          <div class="age-option">
+            <input type="radio" id="age-14-17" name="age_group" value="14-17" />
+            <label for="age-14-17">14–17</label>
+          </div>
+          <div class="age-option">
+            <input type="radio" id="age-18-plus" name="age_group" value="18+" />
+            <label for="age-18-plus">18+</label>
+          </div>
+        </div>
+      </div>
       
-      <!-- Name -->
+      <!-- Q1: News Sources (Checkboxes) -->
       <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" name="name" placeholder="John Doe" required />
+        <label class="question-title">Q1. In the past week, which of the following did you use to find out about a current event? (select all that apply)</label>
+        <div class="checkbox-group">
+          <label class="option-label"><input type="checkbox" name="q1_sources" value="Social media"> Social media (e.g. Instagram, Facebook, X/Twitter, TikTok)</label>
+          <label class="option-label"><input type="checkbox" name="q1_sources" value="YouTube"> YouTube</label>
+          <label class="option-label"><input type="checkbox" name="q1_sources" value="News app or website"> A news app or website</label>
+          <label class="option-label"><input type="checkbox" name="q1_sources" value="Television"> Television</label>
+          <label class="option-label"><input type="checkbox" name="q1_sources" value="Radio"> Radio</label>
+          <label class="option-label"><input type="checkbox" name="q1_sources" value="Newspaper or magazine"> A newspaper or magazine (print)</label>
+          <label class="option-label"><input type="checkbox" name="q1_sources" value="Family or friends"> Family or friends talking about it</label>
+          <label class="option-label"><input type="checkbox" name="q1_sources" value="Don't follow news"> I don't really follow the news</label>
+        </div>
+        <div style="margin-top: 0.6rem;">
+          <input type="text" name="q1_other_source" placeholder="Other source (optional)" />
+        </div>
       </div>
 
-      <!-- Email -->
+      <!-- Q2: Minutes spent on news -->
       <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" placeholder="john@example.com" required />
+        <label class="question-title" for="q2_minutes">Q2. On an average day, about how many minutes do you spend actively reading, watching, or checking the news?</label>
+        <input type="number" id="q2_minutes" name="q2_daily_minutes" min="0" placeholder="e.g. 30" required />
       </div>
 
-      <!-- Custom Scale 1: Radio Buttons (1 to 5) -->
+      <!-- Q3: Trust in news on social media (Scale 1-10) -->
       <div class="form-group">
-        <label>How satisfied are you with our product?</label>
-        <div class="scale-container">
-          <div class="scale-option">
-            <input type="radio" id="score-1" name="satisfaction_rating" value="1" required />
-            <label for="score-1">1</label>
+        <label class="question-title">Q3. On a scale of 1-10, how much do you trust news stories you see on social media?</label>
+        <div class="scale-wrapper">
+          <div class="scale-container">
+            <div class="scale-option"><input type="radio" id="q3-1" name="q3_trust_scale" value="1" required /><label for="q3-1">1</label></div>
+            <div class="scale-option"><input type="radio" id="q3-2" name="q3_trust_scale" value="2" /><label for="q3-2">2</label></div>
+            <div class="scale-option"><input type="radio" id="q3-3" name="q3_trust_scale" value="3" /><label for="q3-3">3</label></div>
+            <div class="scale-option"><input type="radio" id="q3-4" name="q3_trust_scale" value="4" /><label for="q3-4">4</label></div>
+            <div class="scale-option"><input type="radio" id="q3-5" name="q3_trust_scale" value="5" /><label for="q3-5">5</label></div>
+            <div class="scale-option"><input type="radio" id="q3-6" name="q3_trust_scale" value="6" /><label for="q3-6">6</label></div>
+            <div class="scale-option"><input type="radio" id="q3-7" name="q3_trust_scale" value="7" /><label for="q3-7">7</label></div>
+            <div class="scale-option"><input type="radio" id="q3-8" name="q3_trust_scale" value="8" /><label for="q3-8">8</label></div>
+            <div class="scale-option"><input type="radio" id="q3-9" name="q3_trust_scale" value="9" /><label for="q3-9">9</label></div>
+            <div class="scale-option"><input type="radio" id="q3-10" name="q3_trust_scale" value="10" /><label for="q3-10">10</label></div>
           </div>
-          <div class="scale-option">
-            <input type="radio" id="score-2" name="satisfaction_rating" value="2" />
-            <label for="score-2">2</label>
-          </div>
-          <div class="scale-option">
-            <input type="radio" id="score-3" name="satisfaction_rating" value="3" />
-            <label for="score-3">3</label>
-          </div>
-          <div class="scale-option">
-            <input type="radio" id="score-4" name="satisfaction_rating" value="4" />
-            <label for="score-4">4</label>
-          </div>
-          <div class="scale-option">
-            <input type="radio" id="score-5" name="satisfaction_rating" value="5" />
-            <label for="score-5">5</label>
+          <div class="scale-labels">
+            <span>Not at all (1)</span>
+            <span>Completely (10)</span>
           </div>
         </div>
       </div>
 
-      <!-- Custom Scale 2: Range Slider (1 to 10) -->
+      <!-- Q4: Fact-checking frequency (Scale 1-10) -->
       <div class="form-group">
-        <label for="recommendation">Likelihood to recommend (1–10)</label>
-        <input type="range" id="recommendation" name="nps_recommendation" min="1" max="10" value="5" class="range-slider" />
+        <label class="question-title">Q4. On a scale of 1-10, how often do you check whether a story is true before sharing it?</label>
+        <div class="scale-wrapper">
+          <div class="scale-container">
+            <div class="scale-option"><input type="radio" id="q4-1" name="q4_factcheck_scale" value="1" required /><label for="q4-1">1</label></div>
+            <div class="scale-option"><input type="radio" id="q4-2" name="q4_factcheck_scale" value="2" /><label for="q4-2">2</label></div>
+            <div class="scale-option"><input type="radio" id="q4-3" name="q4_factcheck_scale" value="3" /><label for="q4-3">3</label></div>
+            <div class="scale-option"><input type="radio" id="q4-4" name="q4_factcheck_scale" value="4" /><label for="q4-4">4</label></div>
+            <div class="scale-option"><input type="radio" id="q4-5" name="q4_factcheck_scale" value="5" /><label for="q4-5">5</label></div>
+            <div class="scale-option"><input type="radio" id="q4-6" name="q4_factcheck_scale" value="6" /><label for="q4-6">6</label></div>
+            <div class="scale-option"><input type="radio" id="q4-7" name="q4_factcheck_scale" value="7" /><label for="q4-7">7</label></div>
+            <div class="scale-option"><input type="radio" id="q4-8" name="q4_factcheck_scale" value="8" /><label for="q4-8">8</label></div>
+            <div class="scale-option"><input type="radio" id="q4-9" name="q4_factcheck_scale" value="9" /><label for="q4-9">9</label></div>
+            <div class="scale-option"><input type="radio" id="q4-10" name="q4_factcheck_scale" value="10" /><label for="q4-10">10</label></div>
+          </div>
+          <div class="scale-labels">
+            <span>Never (1)</span>
+            <span>Always (10)</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Message -->
+      <!-- Q5: Shared false news -->
       <div class="form-group">
-        <label for="message">Comments</label>
-        <textarea id="message" name="message" rows="4" placeholder="Your thoughts..." required></textarea>
+        <label class="question-title">Q5. In the past month, have you shared a news story that later turned out to be false or misleading?</label>
+        <div class="radio-group">
+          <label class="option-label"><input type="radio" name="q5_shared_false_news" value="Yes" required> Yes</label>
+          <label class="option-label"><input type="radio" name="q5_shared_false_news" value="No"> No</label>
+          <label class="option-label"><input type="radio" name="q5_shared_false_news" value="Not sure"> Not sure</label>
+        </div>
+      </div>
+
+      <!-- Q6: Trust factors -->
+      <div class="form-group">
+        <label class="question-title" for="q6_trust_factor">Q6. What's one thing that makes you trust or distrust a news source?</label>
+        <textarea id="q6_trust_factor" name="q6_trust_factor" rows="3" placeholder="A word, phrase, or short sentence..." required></textarea>
       </div>
 
       <!-- Submit Button -->
-      <button type="submit">Submit Feedback</button>
+      <button type="submit">Submit Poll</button>
 
     </form>
   </div>
