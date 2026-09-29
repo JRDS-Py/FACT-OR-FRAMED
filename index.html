@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback Form</title>
+  <style>
+    /* CUSTOM THEME COLORS & STYLING */
+    :root {
+      --bg-color: #f4f6f8;
+      --card-bg: #ffffff;
+      --primary-color: #6366f1; /* Main Accent Color */
+      --primary-hover: #4f46e5;
+      --text-color: #1f2937;
+      --border-color: #e5e7eb;
+      --accent-scale: #818cf8;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .form-card {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    textarea:focus {
+      border-color: var(--primary-color);
+    }
+
+    /* CUSTOM RATING SCALE STYLING (1-5) */
+    .scale-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .scale-option {
+      flex: 1;
+      text-align: center;
+    }
+
+    .scale-option input[type="radio"] {
+      display: none; /* Hide default radio */
+    }
+
+    .scale-option label {
+      display: block;
+      padding: 0.75rem 0;
+      background-color: #f3f4f6;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .scale-option input[type="radio"]:checked + label {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border-color: var(--primary-hover);
+    }
+
+    .scale-option label:hover {
+      background-color: var(--accent-scale);
+      color: #ffffff;
+    }
+
+    /* SLIDER SCALE STYLING */
+    .range-slider {
+      width: 100%;
+      accent-color: var(--primary-color);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      padding: 0.85rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: var(--primary-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-card">
+    <h2>Send Us Feedback</h2>
+    
+    <!-- FORMSPREE ENDPOINT INTEGRATION -->
+    <form action="https://formspree.io/f/xnpnlgvd" method="POST">
+      
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" placeholder="John Doe" required />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="john@example.com" required />
+      </div>
+
+      <!-- Custom Scale 1: Radio Buttons (1 to 5) -->
+      <div class="form-group">
+        <label>How satisfied are you with our product?</label>
+        <div class="scale-container">
+          <div class="scale-option">
+            <input type="radio" id="score-1" name="satisfaction_rating" value="1" required />
+            <label for="score-1">1</label>
+          </div>
+          <div class="scale-option">
+            <input type="radio" id="score-2" name="satisfaction_rating" value="2" />
+            <label for="score-2">2</label>
+          </div>
+          <div class="scale-option">
+            <input type="radio" id="score-3" name="satisfaction_rating" value="3" />
+            <label for="score-3">3</label>
+          </div>
+          <div class="scale-option">
+            <input type="radio" id="score-4" name="satisfaction_rating" value="4" />
+            <label for="score-4">4</label>
+          </div>
+          <div class="scale-option">
+            <input type="radio" id="score-5" name="satisfaction_rating" value="5" />
+            <label for="score-5">5</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Scale 2: Range Slider (1 to 10) -->
+      <div class="form-group">
+        <label for="recommendation">Likelihood to recommend (1–10)</label>
+        <input type="range" id="recommendation" name="nps_recommendation" min="1" max="10" value="5" class="range-slider" />
+      </div>
+
+      <!-- Message -->
+      <div class="form-group">
+        <label for="message">Comments</label>
+        <textarea id="message" name="message" rows="4" placeholder="Your thoughts..." required></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit">Submit Feedback</button>
+
+    </form>
+  </div>
+
+</body>
+</html>
